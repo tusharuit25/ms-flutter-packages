@@ -200,13 +200,23 @@ class _OnBoard extends HookConsumerWidget {
                       child: Column(
                         children: <Widget>[
                           Expanded(
-                            child: Image.asset(
-                              onBoardData[index].imgUrl,
-                              width: imageWidth,
-                              height: imageHeight,
-                              fit: BoxFit.contain,
-                            ),
+                          child: Image.network(
+                            onBoardData[index].imgUrl, // Use network image
+                            width: imageWidth,
+                            height: imageHeight,
+                            fit: BoxFit.contain,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Icon(Icons.error); // Show an error icon if image fails to load
+                            },
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) {
+                                return child;
+                              } else {
+                                return const Center(child: CircularProgressIndicator());
+                              }
+                            },
                           ),
+                        ),
                           Container(
                             margin: const EdgeInsets.symmetric(horizontal: 12),
                             child: Text(
